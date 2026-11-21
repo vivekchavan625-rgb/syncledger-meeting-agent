@@ -1,0 +1,41 @@
+{
+  "meetings": [
+    {
+      "id": "m1",
+      "title": "Product Kickoff Sync",
+      "date": "2026-11-15",
+      "decisions": [
+        {
+          "id": "d1",
+          "text": "Launch date locked for Friday",
+          "timestamp": "2026-11-15T10:00:00Z"
+        },
+        {
+          "id": "d2",
+          "text": "OAuth/Google SSO selected for authentication",
+          "timestamp": "2026-11-15T10:15:00Z"
+        }
+      ],
+      "tasks": [
+        {
+          "id": "t1",
+          "title": "Prepare launch checklist",
+          "owner": "alice",
+          "deadline": "2026-11-20"
+        }
+      ]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "t1",
+      "title": "Prepare launch checklist",
+      "owner": "alice",
+      "deadline": "2026-11-20",
+      "completed": false
+    }
+  ],
+  "stagedBatch": null,
+  "reminders": [],
+  "weeklyDigests": {}
+}

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SyncLedger - Meeting-to-Execution Agent</title>
+<meta name="description" content="Turn meeting talk into tracked execution: conflict-aware, human-approved tasks, reminders and weekly digests.">
+<meta name="theme-color" content="#07080F">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%237C5CFF'/%3E%3Cpath d='M9 11h9M9 16h6M9 21h9' stroke='%23fff' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css"></head>
+<body>
+<a class="skip" href="#capture">Skip to content</a>
+<header class="top"><div class="wrap bar">
+<a class="brand" href="#overview"><svg width="30" height="30" viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#7C5CFF"/><stop offset="1" stop-color="#22D3EE"/></linearGradient></defs><rect width="32" height="32" rx="9" fill="url(#lg)"/><path d="M9 11h9M9 16h6M9 21h9" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/><path d="M20 12a5 5 0 1 1-1 7.5" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>SyncLedger</a>
+<nav id="nav" aria-label="Primary"><a href="#overview">Overview</a><a href="#capture">Capture</a><a href="#pipeline">Pipeline</a><a href="#review">Review<b class="bdg" id="bR" hidden></b></a><a href="#tasks">Tasks<b class="bdg" id="bT" hidden></b></a><a href="#reminders">Reminders</a><a href="#digests">Digests</a><a href="#memory">Memory</a></nav>
+<div class="right"><span class="pill" id="pBack"><i></i>Backend: Checking</span><span class="pill" id="pMic"><i></i>Mic: Idle</span><span class="pill" id="pStage"><i></i>Stage: Idle</span><button class="btn ghost" id="reset">Reset Demo</button><button class="btn ghost burger" id="burger" aria-label="Menu" aria-expanded="false">Menu</button></div>
+</div></header>
+<main>
+<div id="banner" class="banner wrap" hidden><span id="bmsg"></span><button class="btn ghost" id="retry">Retry</button></div>
+<section id="overview" class="hero wrap">
+<span class="tag">AI Meeting-to-Execution Agent</span>
+<h1>Turn meeting talk into tracked execution.</h1>
+<p class="sub">Capture the conversation, catch conflicts with past decisions, approve with one click, and let SyncLedger create the tasks, reminders and weekly digests.</p>
+<div class="chips"><span>Voice-first</span><span>Conflict-aware</span><span>Human-approved</span></div>
+<div class="cta"><a class="btn pri" href="#capture">Start a meeting</a><button class="btn ghost" data-p="conflict">Try the conflict demo</button></div>
+<div class="kpis"><div><b id="kM">0</b>Meetings</div><div><b id="kT">0</b>Tasks</div><div><b id="kC">0</b>Open conflicts</div><div><b id="kD">0</b>Due soon</div></div>
+</section>
+<section id="capture" class="wrap sec"><h2>Capture a meeting</h2>
+<p class="desc">Extracted lines start with <code>Decision:</code> or <code>Action: title | owner:name | deadline:YYYY-MM-DD</code>. Put the speaker first, like <code>Bob: Decision: ...</code>. When speaking, say "Decision ..." or "Action ...".</p>
+<div class="card cap">
+<div class="left"><div id="orbwrap" class="ow"><button id="orb" class="orb" aria-label="Start or stop microphone"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></button></div>
+<p id="micmsg" class="mu">Tap the orb to start listening</p>
+<div id="spk" class="spk" role="group" aria-label="Speaker"></div>
+<label class="mu">Language <select id="lang"><option>en-IN</option><option>en-US</option><option>hi-IN</option></select></label></div>
+<div class="right2"><input id="title" placeholder="Meeting title" aria-label="Meeting title"><textarea id="tx" rows="10" aria-label="Transcript" placeholder="Alice: Decision: Launch stays on Friday&#10;Bob: Action: Prepare checklist | owner:bob | deadline:2026-11-25"></textarea>
+<p id="interim" class="mono mu"></p>
+<div class="presets"><button class="btn ghost" data-p="sprint">Normal Sprint Sync</button><button class="btn ghost" data-p="conflict">Launch &amp; Auth Conflict</button><button class="btn ghost" data-p="messy">Messy Meeting</button><button id="analyze" class="btn pri">Analyze Meeting</button></div></div>
+</div></section>
+<section id="pipeline" class="wrap sec"><h2>Execution pipeline</h2><p class="desc">Nothing is posted until you approve it at the human gate.</p>
+<ol class="steps"><li class="step"><b>01</b><h3>Capture</h3><p>Live voice or transcript</p></li><li class="step"><b>02</b><h3>Extract</h3><p>Decisions and actions</p></li><li class="step"><b>03</b><h3>Memory</h3><p>Look up past decisions</p></li><li class="step"><b>04</b><h3>Conflict</h3><p>Detect contradictions</p></li><li class="step"><b>05</b><h3>Human review</h3><p>Approve or resolve</p></li><li class="step"><b>06</b><h3>Execute</h3><p>Tasks, reminders, digests</p></li></ol></section>
+<section id="review" class="wrap sec"><h2>Review and approve</h2>
+<div id="revEmpty" class="card empty">Nothing staged yet. Analyze a meeting to review it here.</div>
+<div id="rev" class="card" hidden><p><span class="badge">Not yet posted</span> <span id="lock" class="mu"></span></p>
+<h3>Conflicts with past decisions</h3><div id="cfs"></div>
+<h3>New decisions</h3><ul id="decs" class="list"></ul>
+<h3>Action items <button class="btn ghost sm" id="all">Select All</button><button class="btn ghost sm" id="none">Select None</button></h3><ul id="acts" class="list"></ul>
+<button id="confirm" class="btn pri">Confirm &amp; Post</button></div></section>
+<div class="wrap grid2 sec">
+<section id="tasks" class="card"><h2>Tracker tasks</h2><ul id="tl" class="list"></ul></section>
+<section id="reminders" class="card"><h2>Pre-deadline reminders</h2><ul id="rl" class="list"></ul></section>
+<section id="digests" class="card"><h2>Weekly digest</h2><div id="dt" class="tabs"></div><pre id="dp" class="mono dig"></pre><button class="btn ghost sm" id="copy">Copy Digest</button></section>
+<section id="memory" class="card"><h2>Past meetings and decisions</h2><ul id="ml" class="list"></ul></section>
+</div>
+</main>
+<footer class="wrap foot">SyncLedger - From meeting talk to tracked execution. Built for the hackathon, Problem Statement #03.</footer>
+<dialog id="dlg"><h3>Post to tracker?</h3><p id="dsum" class="mu"></p><div class="acts"><button class="btn ghost" id="dno">Cancel</button><button class="btn pri" id="dyes">Confirm &amp; Post</button></div></dialog>
+<div id="toasts" aria-live="polite"></div>
+<script src="app.js" defer></script>
+</body></html>
