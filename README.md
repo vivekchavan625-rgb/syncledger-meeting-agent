@@ -3,10 +3,13 @@
 > **Meetings end. Decisions don't.**  
 > Turn spoken discussions and meeting transcripts into reviewed decisions, assigned tasks, deadline reminders, per-person weekly digests, and a conflict-aware decision audit trail.
 
-![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=flat-square&logo=nodedotjs&logoColor=white)
-![Architecture](https://img.shields.io/badge/Human--in--the--Loop-Conflict%20Gate-7C3AED?style=flat-square)
-![License](https://img.shields.io/badge/License-MIT-059669?style=flat-square)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-syncledger--meeting--agent.vercel.app-00C853?style=for-the-badge&logo=vercel&logoColor=white)](https://syncledger-meeting-agent.vercel.app)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.x-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-Express-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Conflict Gate](https://img.shields.io/badge/Human--in--the--Loop-Conflict%20Gate-7C3AED?style=for-the-badge)](#how-it-works)
+[![License](https://img.shields.io/badge/License-MIT-F59E0B?style=for-the-badge)](#license)
+
+**Live App:** [https://syncledger-meeting-agent.vercel.app](https://syncledger-meeting-agent.vercel.app)
 
 ---
 
@@ -52,55 +55,3 @@ In real teams, meetings generate plenty of talk—but action items get scattered
                                                 |
                                                 v
                [Confirm & Post] ---> [Tasks + Reminders + Per-Person Weekly Digests]
-```
-
----
-
-## Visual Walkthrough (Website Screenshots)
-
-Save your website screenshots inside the `assets/` folder using the filenames below:
-
-| Screen / Stage | What It Shows | File Path in `assets/` |
-| :--- | :--- | :--- |
-| **Overview & Capture** | Hero summary, live counters, and meeting transcript / voice capture workspace | `assets/01-overview-capture.png` |
-| **Conflict Review Gate** | Side-by-side past decision vs. new proposal with `Keep Past` / `Accept New` controls | `assets/02-conflict-review.png` |
-| **Confirm & Post** | Approving staged decisions & tasks to publish execution items | `assets/03-confirm-post.png` |
-| **Tasks, Reminders & Digests** | Tracked owner tasks, deadline urgency buckets, per-person digests, and decision memory | `assets/04-tasks-digests-memory.png` |
-
----
-
-## Tech Stack & Architecture
-
-* **Frontend (`frontend/public`)**: `index.html`, `style.css`, `app.js` — clean multi-view workspace (`Overview`, `Capture`, `Pipeline`, `Review`, `Tasks`, `Reminders`, `Digests`, `Memory`).
-* **Backend (`src/index.ts`)**: Express + TypeScript REST API handling extraction, conflict detection, batch staging, confirmation, and demo reset.
-* **Persistence (`src/db.ts`)**: JSON store with resilient runtime fallback for local and serverless execution.
-* **Serverless Entry (`api/index.ts` & `vercel.json`)**: Routes `/api/*` requests cleanly to the Express application.
-
----
-
-## API Endpoints
-
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/api/state` | Fetch meetings, staged batch, tasks, reminders, and weekly digests. |
-| `POST` | `/api/analyze` | Analyze transcript into candidate decisions, actions, and conflicts. |
-| `POST` | `/api/confirm` | Apply conflict resolutions, save approved tasks, and record the meeting. |
-| `POST` | `/api/reset-demo` | Reset workspace back to seeded demo data. |
-
----
-
-## Run Locally
-
-```bash
-npm install
-npm run build
-npm start
-```
-
-Then open `http://localhost:3001/` in your browser.
-
----
-
-## License
-
-Released under the **MIT License**.
