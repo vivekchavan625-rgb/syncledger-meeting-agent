@@ -1,25 +1,60 @@
-# SyncLedger - Meeting-to-Execution Agent
+# SyncLedger — Meeting-to-Execution Agent
 
-> **"Meetings end. Decisions don't."**
-> Turn spoken discussions and meeting transcripts into reviewed decisions, assigned tasks, deadline reminders, per-person weekly digests, and a conflict-aware decision audit trail.
+### *Meetings end. Decisions don't.*
 
-## Key Capabilities
+Turn spoken discussions and meeting transcripts into **reviewed decisions**, **assigned tasks**, **deadline reminders**, **per-person weekly digests**, and a **conflict-aware decision audit trail**.
 
-- **Live Voice & Transcript Capture:** Capture meeting notes with speaker selection and hotkeys (`1-9`) or paste raw transcripts.
-- **Decision & Action Extraction:** Parses structured markers (`Decision:`, `Action:`) as well as conversational lines and deadlines with deterministic fallbacks.
-- **Conflict Detection & Supersede Gate:** Checks new decisions against active (non-superseded) past decisions before committing (`accept_new` marks past decisions as `superseded: true`; `keep_past` retains prior commitments).
-- **Execution Tracking, Reminders & Weekly Digests:** Tracks approved tasks, computes deadline reminder buckets (`overdue`, `critical_24h`, `due_soon`, `upcoming`), and builds per-person weekly digests.
-- **Local & Serverless Persistence:** Persists to `data/db.json` locally with an in-memory fallback for read-only environments.
+[![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-111827?style=for-the-badge&logo=github)](https://github.com/vivekchavan625-rgb/syncledger-meeting-agent)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Deploy%20on%20Vercel-000000?style=for-the-badge&logo=vercel)](https://vercel.com/new)
+[![License: MIT](https://img.shields.io/badge/License-MIT-2563EB?style=for-the-badge)](./LICENSE)
 
-## Architecture
+> **Tip:** Once deployed on Vercel, replace the `Live Demo` badge link above with your `https://your-app.vercel.app` URL so judges and visitors can open the live app in one click.
+
+---
+
+## Core Features at a Glance
+
+| Feature | What It Does |
+| :--- | :--- |
+| **Voice & Transcript Capture** | Captures live voice notes with speaker hotkeys (`1-9`) or raw meeting transcripts |
+| **Smart Extraction** | Extracts decisions and action items (with owners & deadlines) via structured markers + natural language fallback |
+| **Conflict & Supersede Gate** | Flags contradictions against active past decisions (`accept_new` marks old as `superseded: true`, `keep_past` keeps prior decision) |
+| **Deadline Reminders** | Computes live urgency buckets (`overdue`, `critical_24h`, `due_soon`, `upcoming`) |
+| **Per-Person Weekly Digest** | Groups tasks, deadlines, statuses, and decisions by owner for quick sharing |
+| **Resilient Persistence** | Uses `data/db.json` locally with an in-memory fallback for read-only/serverless runtimes |
+
+---
+
+## How It Works
 
 ```text
-Frontend (frontend/public) ---> Express API (src/index.ts) ---> Persistence Layer (src/db.ts)
-  index.html, style.css, app.js    /api/state, /api/analyze           data/db.json + In-Memory Cache
-                                   /api/confirm, /api/reset-demo
+[Capture Voice / Transcript]
+           |
+           v
+[Extract Decisions & Tasks] ---> [Check Active Memory for Conflicts]
+                                              |
+               +------------------------------+------------------------------+
+               | No Conflict                                 Conflict Found |
+               v                                                             v
+       [Stage Batch]                                     [Human Review Gate: Keep Past / Accept New]
+               |                                                             |
+               +------------------------------+------------------------------+
+                                              |
+                                              v
+             [Confirm & Post] ---> [Tasks + Reminders + Per-Person Weekly Digests]
 ```
 
-## Local Setup
+---
+
+## Tech Stack & Architecture
+
+- **Frontend (`frontend/public`):** `index.html`, `style.css`, `app.js`
+- **Backend (`src/index.ts`):** Express + TypeScript REST API
+- **Persistence (`src/db.ts`):** JSON store (`data/db.json`) + in-memory fallback
+
+---
+
+## Run Locally
 
 ```bash
 npm install
@@ -27,17 +62,21 @@ npm run build
 npm start
 ```
 
-Open `http://localhost:3001/` in your browser.
+Then open **[http://localhost:3001/](http://localhost:3001/)** in your browser.
+
+---
 
 ## API Endpoints
 
-| Method | Endpoint | Purpose |
+| Method | Endpoint | Description |
 | :--- | :--- | :--- |
-| `GET` | `/api/state` | Returns meetings, staged batch, tasks, reminders, and weekly digests |
-| `POST` | `/api/analyze` | Analyzes transcript into candidate decisions, actions, and conflicts |
-| `POST` | `/api/confirm` | Applies conflict resolutions, saves approved tasks, and records meeting |
-| `POST` | `/api/reset-demo` | Resets state back to initial seed data |
+| `GET` | `/api/state` | Fetch meetings, staged batch, tasks, reminders, and weekly digests |
+| `POST` | `/api/analyze` | Analyze transcript into candidate decisions, actions, and conflicts |
+| `POST` | `/api/confirm` | Apply conflict resolutions, save approved tasks, and record meeting |
+| `POST` | `/api/reset-demo` | Reset workspace back to seeded demo data |
+
+---
 
 ## License
 
-MIT License - see [LICENSE](./LICENSE).
+Released under the **[MIT License](./LICENSE)**.
