@@ -243,4 +243,5 @@ app.post('/api/reset-demo', async (_req: Request, res: Response) => {
   res.json({ message: 'Database reset to initial seeded state' });
 });
 
+app.listen(PORT, '127.0.0.1', () => console.log(`Server running on port ${PORT}`));
 export default app;
